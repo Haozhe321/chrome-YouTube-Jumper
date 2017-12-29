@@ -15,8 +15,10 @@ function getCurrentTabUrl(callback) {
     active: true,
     currentWindow: true
   };
+  var a = browser.tabs;
+  console.log(typeof(a));
 
-  chrome.tabs.query(queryInfo, (tabs) => {
+  a.query(queryInfo, (tabs) => {
     // chrome.tabs.query invokes the callback with a list of tabs that match the
     // query. When the popup is opened, there is certainly a window and at least
     // one tab, so we can safely assume that |tabs| is a non-empty array.
@@ -37,6 +39,7 @@ function getCurrentTabUrl(callback) {
     callback(url);
   });
 
+}
   // Most methods of the Chrome extension APIs are asynchronous. This means that
   // you CANNOT do something like this:
   //
@@ -45,23 +48,21 @@ function getCurrentTabUrl(callback) {
   //   url = tabs[0].url;
   // });
   // alert(url); // Shows "undefined", because chrome.tabs.query is async.
-}
+
 
 /**
  * Change the background color of the current page.
  *
  * @param {string} color The new background color.
  */
-function changeBackgroundColor(color) {
-  var script = 'document.body.style.backgroundColor="' + color + '";';
+function changeUrl(backgroundUrl, time) {
+  var newUrl = backgroundUrl + "#t=" + time;
   // See https://developer.chrome.com/extensions/tabs#method-executeScript.
   // chrome.tabs.executeScript allows us to programmatically inject JavaScript
   // into a page. Since we omit the optional first argument "tabId", the script
   // is inserted into the active tab of the current window, which serves as the
   // default.
-  chrome.tabs.executeScript({
-    code: script
-  });
+  chrome.tabs.update(null, {url:"http://en.wikipedia.org"});
 }
 
 /**
@@ -71,7 +72,7 @@ function changeBackgroundColor(color) {
  * @param {function(string)} callback called with the saved background color for
  *     the given url on success, or a falsy value if no color is retrieved.
  */
-function getSavedBackgroundColor(url, callback) {
+function getSavedBackgroundUrl(url, callback) {
   // See https://developer.chrome.com/apps/storage#type-StorageArea. We check
   // for chrome.runtime.lastError to ensure correctness even when the API call
   // fails.
@@ -86,9 +87,9 @@ function getSavedBackgroundColor(url, callback) {
  * @param {string} url URL for which background color is to be saved.
  * @param {string} color The background color to be saved.
  */
-function saveBackgroundColor(url, color) {
+function saveBackgroundUrl(url) {
   var items = {};
-  items[url] = color;
+  items[url] = url;
   // See https://developer.chrome.com/apps/storage#type-StorageArea. We omit the
   // optional callback since we don't need to perform any action once the
   // background color is saved.
@@ -103,24 +104,38 @@ function saveBackgroundColor(url, color) {
 // to a document's origin. Also, using chrome.storage.sync instead of
 // chrome.storage.local allows the extension data to be synced across multiple
 // user devices.
-document.addEventListener('DOMContentLoaded', () => {
-  getCurrentTabUrl((url) => {
-    var dropdown = document.getElementById('dropdown');
-
-    // Load the saved background color for this page and modify the dropdown
-    // value, if needed.
-    getSavedBackgroundColor(url, (savedColor) => {
-      if (savedColor) {
-        changeBackgroundColor(savedColor);
-        dropdown.value = savedColor;
-      }
+document.addEventListener('DOMContentLoaded', function () {
+    document.getElementById('button').addEventListener("click", function () {
+        chrome.tabs.query({
+            'active': true,
+            'windowId': chrome.windows.WINDOW_ID_CURRENT
+        }, function (tabs) {
+            chrome.tabs.create({
+                url: 'http://www.mydestination.com/index.php?url=' + tabs[0].url
+            });
+        });
     });
-
-    // Ensure the background color is changed and saved when the dropdown
-    // selection changes.
-    dropdown.addEventListener('change', () => {
-      changeBackgroundColor(dropdown.value);
-      saveBackgroundColor(url, dropdown.value);
-    });
-  });
 });
+var globalUrl;
+function submitform() {
+    var hour = document.getElementById("hour").value;
+    var minute = document.getElementById("minute").value;
+    var second = document.getElementById("second").value;
+
+    var time = "";
+
+    time = time + hour;
+    if(hour.length != 0) {
+        time = time + hour + "h";
+    }
+    if(minute.length != 0) {
+        time = time + minute + "m";
+    }
+    if(second.length != 0) {
+        time = time + second + "s";
+    }
+    alert(time);
+    var backgroundUrl = getCurrentTabUrl((url) => { globalUrl = url;});
+    console.log(backgroundUrl);
+    //changeUrl(backgroundUrl, time);
+}
