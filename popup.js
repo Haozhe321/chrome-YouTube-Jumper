@@ -1,5 +1,8 @@
 document.addEventListener('DOMContentLoaded', function () {
-    document.getElementById('button').addEventListener("click", function () {
+    document.addEventListener("keydown", function (event) {
+        if(event.which != 13) {
+            return;
+        }
         chrome.tabs.query({
             'active': true,
             'windowId': chrome.windows.WINDOW_ID_CURRENT
@@ -19,8 +22,6 @@ function jumpTime() {
     var second = document.getElementById("second").value;
 
     var time = "#t=";
-
-    time = time + hour;
     if(hour.length != 0) {
         time = time + hour + "h";
     }

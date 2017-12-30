@@ -14,6 +14,15 @@
       "scripts": ["background.js"],
       "persistent": false
   },
+  "commands": {
+      "_execute_page_action": {
+              "suggested_key": {
+                "default": "Ctrl+J",
+                "windows": "Ctrl+J",
+                "mac": "Ctrl+J"
+              }
+      }
+  },
   "permissions": [
     "activeTab",
     "tabs"
