@@ -15,7 +15,7 @@ function getCurrentTabUrl(callback) {
     active: true,
     currentWindow: true
   };
-  var a = browser.tabs;
+  var a = chrome.tabs;
   console.log(typeof(a));
 
   a.query(queryInfo, (tabs) => {
@@ -110,19 +110,21 @@ document.addEventListener('DOMContentLoaded', function () {
             'active': true,
             'windowId': chrome.windows.WINDOW_ID_CURRENT
         }, function (tabs) {
-            chrome.tabs.create({
-                url: 'http://www.mydestination.com/index.php?url=' + tabs[0].url
+            var urlArray = tabs[0].url.split("&t");
+            var firstUrl = urlArray[0].split("#t");
+            chrome.tabs.update({
+                url: firstUrl + submitform()
             });
         });
     });
 });
-var globalUrl;
-function submitform() {
+
+function jumpTime() {
     var hour = document.getElementById("hour").value;
     var minute = document.getElementById("minute").value;
     var second = document.getElementById("second").value;
 
-    var time = "";
+    var time = "#t=";
 
     time = time + hour;
     if(hour.length != 0) {
@@ -134,8 +136,6 @@ function submitform() {
     if(second.length != 0) {
         time = time + second + "s";
     }
-    alert(time);
-    var backgroundUrl = getCurrentTabUrl((url) => { globalUrl = url;});
-    console.log(backgroundUrl);
-    //changeUrl(backgroundUrl, time);
+
+    return time;
 }
