@@ -1,4 +1,6 @@
-var actualUrl; //to store the actal url of the website without the timestamp 
+var actualUrl; //to store the actal url of the website without the timestamp
+
+////////////////// EVENT LISTENERS ////////////////////////////////////////////
 document.addEventListener('DOMContentLoaded', function() {
     chrome.tabs.query({
         'active': true,
@@ -27,6 +29,15 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
+document.addEventListener('DOMContentLoaded', function(){
+    var copyUrl = document.getElementById("copy-url");
+    copyUrl.addEventListener('click', function(event) {
+      copyURLToClipboard();
+    });
+});
+
+
+/////////////////////// FUNCTIONS ///////////////////////////////////////////
 function jumpTime() {
     var hour = document.getElementById("hour").value;
     var minute = document.getElementById("minute").value;
@@ -45,50 +56,21 @@ function jumpTime() {
 
     return time;
 }
-window.onload=function(){
-    var copyUrl = document.getElementById("copy-url");
-    copyUrl.addEventListener('click', function(event) {
-      copyURLToClipboard();
-    });
-}
 
 function copyURLToClipboard() {
+    //create a temporary element to store the url. after copying, the element will be deleted
     var textArea = document.createElement("textarea");
-    // // Place in top-left corner of screen regardless of scroll position.
-    // textArea.style.position = 'fixed';
-    // textArea.style.top = 0;
-    // textArea.style.left = 0;
-    //
-    // // Ensure it has a small width and height. Setting to 1px / 1em
-    // // doesn't work as this gives a negative w/h on some browsers.
-    // textArea.style.width = '2em';
-    // textArea.style.height = '2em';
-    //
-    // // We don't need padding, reducing the size if it does flash render.
-    // textArea.style.padding = 0;
-    //
-    // // Clean up any borders.
-    // textArea.style.border = 'none';
-    // textArea.style.outline = 'none';
-    // textArea.style.boxShadow = 'none';
-    //
-    // // Avoid flash of white box if rendered for any reason.
-    // textArea.style.background = 'transparent';
-
-
     textArea.value = actualUrl;
-
     document.body.appendChild(textArea);
-
     textArea.select();
 
     try {
-    var successful = document.execCommand('copy');
-    var msg = successful ? 'successful' : 'unsuccessful';
-    console.log('Copying text command was ' + msg);
+        var successful = document.execCommand('copy');
+        var msg = successful ? 'successful' : 'unsuccessful';
+        console.log('Copying text command was ' + msg);
     } catch (err) {
-    console.log('Oops, unable to copy');
+        console.log('Unable to copy');
     }
 
-    document.body.removeChild(textArea);
+    document.body.removeChild(textArea); //remove this element after copying
 }
