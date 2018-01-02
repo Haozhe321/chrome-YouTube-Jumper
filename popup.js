@@ -8,14 +8,23 @@ document.addEventListener('DOMContentLoaded', function() {
     }, function (tabs) {
         var urlArray = tabs[0].url.split("&t");
         var firstUrl = urlArray[0].split("#t");
-        actualUrl = firstUrl;
+        actualUrl = firstUrl[0];
     });
 })
+
+document.addEventListener("keydown", function(event) {
+    if (event.keyCode == 67 && (event.ctrlKey || event.metaKey)) {
+        copyURLToClipboard();
+    }
+});
+
+
 document.addEventListener('DOMContentLoaded', function () {
     document.addEventListener("keydown", function (event) {
         if(event.which != 13) {
             return;
         }
+        console.log(event.which);
         chrome.tabs.query({
             'active': true,
             'windowId': chrome.windows.WINDOW_ID_CURRENT
