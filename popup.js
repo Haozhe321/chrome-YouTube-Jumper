@@ -1,6 +1,7 @@
 var actualUrl; //to store the actal url of the website without the timestamp
 
 ////////////////// EVENT LISTENERS ////////////////////////////////////////////
+//record actual url when it is loaded
 document.addEventListener('DOMContentLoaded', function() {
     chrome.tabs.query({
         'active': true,
@@ -12,13 +13,14 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 })
 
+//eventlistener for Ctrl-c
 document.addEventListener("keydown", function(event) {
     if (event.keyCode == 67 && (event.ctrlKey || event.metaKey)) {
         copyURLToClipboard();
     }
 });
 
-
+//eventlistener for Enter to submit form
 document.addEventListener('DOMContentLoaded', function () {
     document.addEventListener("keydown", function (event) {
         if(event.which != 13) {
