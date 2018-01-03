@@ -46,8 +46,9 @@ document.addEventListener('DOMContentLoaded', function(){
       copyURLToClipboard();
     });
 });
-
-
+document.addEventListener('DOMContentLoaded', function(){
+    document.getElementById("clicksomewhere").addEventListener('click', injectTheScript);
+});
 /////////////////////// FUNCTIONS ///////////////////////////////////////////
 function jumpTime() {
     var hour = document.getElementById("hour").value;
@@ -84,4 +85,12 @@ function copyURLToClipboard() {
     }
 
     document.body.removeChild(textArea); //remove this element after copying
+}
+
+function injectTheScript() {
+    chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+        // query the active tab, which will be only one tab
+        //and inject the script in it
+        chrome.tabs.executeScript(tabs[0].id, {file: "content_script.js"});
+    });
 }
