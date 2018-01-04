@@ -55,18 +55,24 @@ function jumpTime() {
     var minute = document.getElementById("minute").value;
     var second = document.getElementById("second").value;
 
-    var time = "#t=";
+    var time = 0;
+    var outputTime = "";
     if(hour.length != 0) {
-        time = time + hour + "h";
+        time = time + parseInt(hour)*3600;
     }
     if(minute.length != 0) {
-        time = time + minute + "m";
+        time = time + parseInt(minute)*60;
     }
     if(second.length != 0) {
-        time = time + second + "s";
+        time = time + parseInt(second);
     }
+    outputTime = "&t=" + time + "s";
 
-    return time;
+    return outputTime;
+}
+
+function jumpTimeOverloaded(time) {
+    return "&t=" + time + "s";
 }
 
 function copyURLToClipboard() {
