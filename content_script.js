@@ -41,6 +41,10 @@ function getListOfOccurances(text) {
 
 }
 
+function jumpTimeOverloaded(time) {
+    return "&t=" + time + "s";
+}
+
 clickOnMore();
 clickOnTranscript();
 chooseLanguages();

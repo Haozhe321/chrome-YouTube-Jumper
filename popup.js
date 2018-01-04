@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', function(){
     });
 });
 document.addEventListener('DOMContentLoaded', function(){
-    document.getElementById("clicksomewhere").addEventListener('click', injectTheScript);
+    document.getElementById("submit-text-search").addEventListener('click', injectTheScript);
 });
 /////////////////////// FUNCTIONS ///////////////////////////////////////////
 function jumpTime() {

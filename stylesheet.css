@@ -13,3 +13,6 @@ h1 {
     display: flex;
     justify-content: space-between;
 }
+input {
+    width: 10%;
+}
