@@ -23,19 +23,22 @@ function selectEnglish() {
             break;
         }
     }
-    setTimeout(getListOfOccurances("he"), 500);
+    window.setTimeout(function(){ getListOfOccurances("Android"); }, 500);
 }
 
 function getListOfOccurances(text) {
     var captionLineList = document.getElementsByClassName("caption-line");
     var occurances = []; //occurances contain a list of time that this text occurs
-    for(var i = 1; i < captionLineList.length; i++) {
-        alert(captionLineList[i].getAttribute("data-time"));
+    for(var i = 0; i < captionLineList.length; i++) {
+        var time = captionLineList[i].getAttribute("data-time")
         var string = captionLineList[i].getElementsByClassName("caption-line-text")[0].innerHTML;
+        console.log(string);
         if(string.includes(text)) {
+            alert("text found!");
             occurances.push(time);
         }
     }
+
 }
 
 clickOnMore();
