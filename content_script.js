@@ -1,3 +1,5 @@
+var searchTerm; //this is the variable to store the string that we want to search
+
 function clickOnMore() {
     var clickLink = document.getElementById("action-panel-overflow-button");
     clickLink.click();
@@ -23,7 +25,7 @@ function selectEnglish() {
             break;
         }
     }
-    window.setTimeout(function(){ getListOfOccurances("Android"); }, 500);
+    window.setTimeout(function(){ getListOfOccurances(searchTerm); }, 500);
 }
 
 function getListOfOccurances(text) {
@@ -34,7 +36,7 @@ function getListOfOccurances(text) {
         var string = captionLineList[i].getElementsByClassName("caption-line-text")[0].innerHTML;
         console.log(string);
         if(string.includes(text)) {
-            alert("text found!");
+            alert("text found!: " + text);
             occurances.push(time);
         }
     }
@@ -45,6 +47,17 @@ function jumpTimeOverloaded(time) {
     return "&t=" + time + "s";
 }
 
-clickOnMore();
-clickOnTranscript();
-chooseLanguages();
+chrome.extension.onMessage.addListener(function(message,sender,sendResponse){
+  //This is where the stuff you want from the background page will be
+  if(message.code != null){
+      searchTerm = message.code;
+      clickOnMore();
+      clickOnTranscript();
+      chooseLanguages();
+  }
+
+});
+
+// clickOnMore();
+// clickOnTranscript();
+// chooseLanguages();
