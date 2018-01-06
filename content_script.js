@@ -37,7 +37,7 @@ function getListOfOccurances(text) {
         var time = captionLineList[i].getAttribute("data-time")
         var string = captionLineList[i].getElementsByClassName("caption-line-text")[0].innerHTML;
         if(string.includes(text)) {
-            occurances.push(captionLineList[i]);
+            occurances.push(time.split(".")[0]);
         }
     }
     num = 0;
@@ -45,7 +45,6 @@ function getListOfOccurances(text) {
         listOfResults: occurances,
         number: 0
     });
-
 }
 
 function jumpTimeOverloaded(time) {
@@ -53,22 +52,10 @@ function jumpTimeOverloaded(time) {
 }
 
 chrome.extension.onMessage.addListener(function(message,sender,sendResponse){
-  //This is where the stuff you want from the background page will be
-  if(message.code != null && message.code != "next"){
+  if(message.code != null){
       searchTerm = message.code;
       clickOnMore();
       clickOnTranscript();
       chooseLanguages();
   }
-});
-
-chrome.extension.onMessage.addListener(function(message,sender,sendResponse){
-    if(message.code === "next"){
-        chrome.storage.local.get(null, function (items) {
-            alert(items.number);
-            alert(typeof(items.listOfResults));
-            items.listOfResults[items.number].click();
-            chrome.storage.local.set({number: items.number + 1});
-        });
-    }
 });

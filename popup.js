@@ -48,9 +48,22 @@ document.addEventListener('DOMContentLoaded', function(){
 });
 
 document.addEventListener('DOMContentLoaded', function(){
-    var copyUrl = document.getElementById("next-search");
-    copyUrl.addEventListener('click', function(event) {
-      clickNext();
+    var nextSearch = document.getElementById("next-search");
+    nextSearch.addEventListener('click', function(events) {
+        chrome.storage.local.get(null, function (items) {
+            var timeWeWant = items.listOfResults[items.number];
+            chrome.tabs.query({
+                'active': true,
+                'windowId': chrome.windows.WINDOW_ID_CURRENT
+            }, function (tabs) {
+                var urlArray = tabs[0].url.split("&t");
+                var firstUrl = urlArray[0].split("#t");
+                chrome.tabs.update({
+                    url: firstUrl + jumpTimeOverloaded(timeWeWant)
+                });
+            });
+            chrome.storage.local.set({number: (items.number + 1) % items.listOfResults.length});
+        });
     });
 });
 
@@ -112,18 +125,6 @@ function injectTheScript(text) {
         chrome.tabs.executeScript(tabs[0].id, {file: "content_script.js"}, function(){
             chrome.tabs.sendMessage(tabs[0].id,{
                 code: text
-            });
-        });
-    });
-}
-
-function clickNext() {
-    chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-        // query the active tab, which will be only one tab
-        //and inject the script in it
-        chrome.tabs.executeScript(tabs[0].id, {file: "content_script.js"}, function(){
-            chrome.tabs.sendMessage(tabs[0].id,{
-                code: "next"
             });
         });
     });
