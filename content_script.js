@@ -1,4 +1,5 @@
 var searchTerm; //this is the variable to store the string that we want to search
+var num;
 
 function clickOnMore() {
     var clickLink = document.getElementById("action-panel-overflow-button");
@@ -30,17 +31,20 @@ function selectEnglish() {
 
 function getListOfOccurances(text) {
     var captionLineList = document.getElementsByClassName("caption-line");
-    captionLineList[5].click();
+    //captionLineList[5].click(); NOTE: you can click on this itself to move thru the video
     var occurances = []; //occurances contain a list of time that this text occurs
     for(var i = 0; i < captionLineList.length; i++) {
         var time = captionLineList[i].getAttribute("data-time")
         var string = captionLineList[i].getElementsByClassName("caption-line-text")[0].innerHTML;
-        console.log(string);
         if(string.includes(text)) {
-            occurances.push(time);
+            occurances.push(captionLineList[i]);
         }
     }
-    alert(occurances.length);
+    num = 0;
+    chrome.storage.local.set({
+        listOfResults: occurances,
+        number: 0
+    });
 
 }
 
@@ -50,15 +54,21 @@ function jumpTimeOverloaded(time) {
 
 chrome.extension.onMessage.addListener(function(message,sender,sendResponse){
   //This is where the stuff you want from the background page will be
-  if(message.code != null){
+  if(message.code != null && message.code != "next"){
       searchTerm = message.code;
       clickOnMore();
       clickOnTranscript();
       chooseLanguages();
   }
-
 });
 
-// clickOnMore();
-// clickOnTranscript();
-// chooseLanguages();
+chrome.extension.onMessage.addListener(function(message,sender,sendResponse){
+    if(message.code === "next"){
+        chrome.storage.local.get(null, function (items) {
+            alert(items.number);
+            alert(typeof(items.listOfResults));
+            items.listOfResults[items.number].click();
+            chrome.storage.local.set({number: items.number + 1});
+        });
+    }
+});
