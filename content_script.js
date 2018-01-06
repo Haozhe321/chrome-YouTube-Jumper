@@ -30,16 +30,17 @@ function selectEnglish() {
 
 function getListOfOccurances(text) {
     var captionLineList = document.getElementsByClassName("caption-line");
+    captionLineList[5].click();
     var occurances = []; //occurances contain a list of time that this text occurs
     for(var i = 0; i < captionLineList.length; i++) {
         var time = captionLineList[i].getAttribute("data-time")
         var string = captionLineList[i].getElementsByClassName("caption-line-text")[0].innerHTML;
         console.log(string);
         if(string.includes(text)) {
-            alert("text found!: " + text);
             occurances.push(time);
         }
     }
+    alert(occurances.length);
 
 }
 
