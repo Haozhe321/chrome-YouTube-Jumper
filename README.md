@@ -13,5 +13,6 @@ How To:
 6. Go to the directory of the unzipped folder and upload. Now you are ready to go. 
 
 Future Change(s):
-* Jump to a part of a video by searching for keywords in the subtitles(similar to Ctrl-F in documents). Great for long lecture videos if you want to skip to the part where the lecture talks about a specific topic. [Just realised you can do this by clicking on Transcripts under "...More", and then Ctrl-F the keyword you want and simply click on that line of the transcript. YouTube will jump to that part of the video for you. So this feature probably won't be implemented anytime soon]
+* Jump to a part of a video by searching for keywords in the subtitles(similar to Ctrl-F in documents). Great for long lecture videos if you want to skip to the part where the lecture talks about a specific topic.
+
 Any more ideas for a YouTube extension, leave them in the issue tracker!
