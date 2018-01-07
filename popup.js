@@ -74,6 +74,13 @@ document.addEventListener('DOMContentLoaded', function(){
         injectTheScript(searchText);}
     );
 });
+
+chrome.runtime.onMessage.addListener(
+  function(request, sender, sendResponse) {
+    if (request.greeting == "hello"){
+        document.getElementById("next-search").style.background='limegreen';
+    }
+  });
 /////////////////////// FUNCTIONS ///////////////////////////////////////////
 function jumpTime() {
     var hour = document.getElementById("hour").value;

@@ -45,6 +45,12 @@ function getListOfOccurances(text) {
         listOfResults: occurances,
         number: 0
     });
+
+    if(occurances.length == 0) {
+        alert("Word not found");
+    }
+    //TODO: Update the buttons css when the results are ready
+    chrome.runtime.sendMessage({greeting: "hello"});
 }
 
 function jumpTimeOverloaded(time) {
