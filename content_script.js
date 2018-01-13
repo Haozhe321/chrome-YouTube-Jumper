@@ -8,37 +8,41 @@ function clickOnMore() {
 
 function clickOnTranscript() {
     var clickTranscript = document.getElementsByClassName("style-scope ytd-menu-popup-renderer");
-    console.log(clickTranscript);
-    window.setTimeout(function(){ clickTranscript.item(2).click();}, 500);
+    window.setTimeout(function(){
+        clickTranscript.item(2).click();
+        window.setTimeout(function() { getListOfOccurances(searchTerm);}, 5000);
+    }, 500);
 }
 
-function chooseLanguages() {
-    var chooseLang = document.getElementsByClassName("yt-uix-button yt-uix-button-default hidden");
-    chooseLang[0].click();
-    setTimeout(selectEnglish, 500);
-}
-
-function selectEnglish() {
-    var languageList = document.getElementsByClassName("yt-ui-menu-item yt-uix-menu-close-on-select yt-uix-button-menu-item");
-    for(var i = 0; i < languageList.length; i++) {
-        if(languageList[i].value == "en: English - .en" ||
-            languageList[i].value == "en: English (Automatic Captions) - a.en") {
-            languageList[i].click();
-            break;
-        }
-    }
-    window.setTimeout(function(){ getListOfOccurances(searchTerm); }, 500);
-}
+// function chooseLanguages() {
+//     var chooseLang = document.getElementsByClassName("yt-uix-button yt-uix-button-default hidden");
+//     chooseLang[0].click();
+//     setTimeout(selectEnglish, 500);
+// }
+//
+// function selectEnglish() {
+//     var languageList = document.getElementsByClassName("yt-ui-menu-item yt-uix-menu-close-on-select yt-uix-button-menu-item");
+//     for(var i = 0; i < languageList.length; i++) {
+//         if(languageList[i].value == "en: English - .en" ||
+//             languageList[i].value == "en: English (Automatic Captions) - a.en") {
+//             languageList[i].click();
+//             break;
+//         }
+//     }
+//     window.setTimeout(function(){ getListOfOccurances(searchTerm); }, 500);
+// }
 
 function getListOfOccurances(text) {
-    var captionLineList = document.getElementsByClassName("caption-line");
+    var captionLineList = document.getElementsByClassName("cue-group style-scope ytd-transcript-body-renderer");
     //captionLineList[5].click(); NOTE: you can click on this itself to move thru the video
     var occurances = []; //occurances contain a list of time that this text occurs
     for(var i = 0; i < captionLineList.length; i++) {
-        var time = captionLineList[i].getAttribute("data-time")
-        var string = captionLineList[i].getElementsByClassName("caption-line-text")[0].innerHTML;
+        var time = captionLineList[i].getElementsByClassName("cue-group-start-offset style-scope ytd-transcript-body-renderer")[0].innerHTML;
+        var string = captionLineList[i].getElementsByClassName("cue style-scope ytd-transcript-body-renderer")[0].innerHTML;
         if(string.includes(text)) {
-            occurances.push(time.split(".")[0]);
+            var splittedString = time.split(":");
+
+            occurances.push(parseInt(splittedString[0])*60 + parseInt(splittedString[1]));
         }
     }
     num = 0;
@@ -48,8 +52,9 @@ function getListOfOccurances(text) {
     });
 
     if(occurances.length == 0) {
-        alert("Word not found");
+        alert("word not found");
     }
+    console.log(occurances[0]);
     //TODO: Update the buttons css when the results are ready
     chrome.runtime.sendMessage({greeting: "hello"});
 }
@@ -63,6 +68,5 @@ chrome.extension.onMessage.addListener(function(message,sender,sendResponse){
       searchTerm = message.code;
       clickOnMore();
       clickOnTranscript();
-      chooseLanguages();
   }
 });
