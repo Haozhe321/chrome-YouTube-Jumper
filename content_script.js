@@ -2,13 +2,14 @@ var searchTerm; //this is the variable to store the string that we want to searc
 var num;
 
 function clickOnMore() {
-    var clickLink = document.getElementById("action-panel-overflow-button");
+    var clickLink = document.querySelector('[aria-label="More actions"]');
     clickLink.click();
 }
 
 function clickOnTranscript() {
-    var clickTranscript = document.getElementsByClassName("yt-ui-menu-item has-icon yt-uix-menu-close-on-select action-panel-trigger action-panel-trigger-transcript")[0];
-    clickTranscript.click();
+    var clickTranscript = document.getElementsByClassName("style-scope ytd-menu-popup-renderer");
+    console.log(clickTranscript);
+    window.setTimeout(function(){ clickTranscript.item(2).click();}, 500);
 }
 
 function chooseLanguages() {
