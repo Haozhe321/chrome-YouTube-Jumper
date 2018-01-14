@@ -68,6 +68,26 @@ document.addEventListener('DOMContentLoaded', function(){
 });
 
 document.addEventListener('DOMContentLoaded', function(){
+    var prevSearch = document.getElementById("prev-search");
+    prevSearch.addEventListener('click', function(events) {
+        chrome.storage.local.get(null, function (items) {
+            var timeWeWant = items.listOfResults[items.number];
+            chrome.tabs.query({
+                'active': true,
+                'windowId': chrome.windows.WINDOW_ID_CURRENT
+            }, function (tabs) {
+                var urlArray = tabs[0].url.split("&t");
+                var firstUrl = urlArray[0].split("#t");
+                chrome.tabs.update({
+                    url: firstUrl + jumpTimeOverloaded(timeWeWant)
+                });
+            });
+            chrome.storage.local.set({number: ((items.number - 1) % items.listOfResults.length)});
+        });
+    });
+});
+
+document.addEventListener('DOMContentLoaded', function(){
     var clickSearch = document.getElementById("submit-text-search");
     clickSearch.addEventListener('click', function(events) {
         var searchText = document.getElementById("text-search").value;
@@ -75,12 +95,14 @@ document.addEventListener('DOMContentLoaded', function(){
     );
 });
 
+
 chrome.runtime.onMessage.addListener(
-  function(request, sender, sendResponse) {
-    if (request.greeting == "hello"){
-        document.getElementById("next-search").style.background='limegreen';
-    }
-  });
+    function(request, sender, sendResponse) {
+      if (request.greeting == "hello"){
+          document.getElementById("prev-search").style.background='limegreen';
+          document.getElementById("next-search").style.background='limegreen';
+      }
+    });
 /////////////////////// FUNCTIONS ///////////////////////////////////////////
 function jumpTime() {
     var hour = document.getElementById("hour").value;

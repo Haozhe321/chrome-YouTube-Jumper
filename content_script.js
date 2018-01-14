@@ -10,7 +10,7 @@ function clickOnTranscript() {
     var clickTranscript = document.getElementsByClassName("style-scope ytd-menu-popup-renderer");
     window.setTimeout(function(){
         clickTranscript.item(2).click();
-        window.setTimeout(function() { getListOfOccurances(searchTerm);}, 5000);
+        window.setTimeout(function() { getListOfOccurances(searchTerm);}, 2000);
     }, 500);
 }
 
