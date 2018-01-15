@@ -1,11 +1,13 @@
 var searchTerm; //this is the variable to store the string that we want to search
-var num;
 
 function clickOnMore() {
     var clickLink = document.querySelector('[aria-label="More actions"]');
     clickLink.click();
 }
 
+/* the setTimeout function is used so that the functions execute sequentially, only after
+the function on the previous line has been completed. Else this creates problems with the clicking
+of the UI */
 function clickOnTranscript() {
     var clickTranscript = document.getElementsByClassName("style-scope ytd-menu-popup-renderer");
     window.setTimeout(function(){
@@ -13,24 +15,6 @@ function clickOnTranscript() {
         window.setTimeout(function() { getListOfOccurances(searchTerm);}, 2000);
     }, 500);
 }
-
-// function chooseLanguages() {
-//     var chooseLang = document.getElementsByClassName("yt-uix-button yt-uix-button-default hidden");
-//     chooseLang[0].click();
-//     setTimeout(selectEnglish, 500);
-// }
-//
-// function selectEnglish() {
-//     var languageList = document.getElementsByClassName("yt-ui-menu-item yt-uix-menu-close-on-select yt-uix-button-menu-item");
-//     for(var i = 0; i < languageList.length; i++) {
-//         if(languageList[i].value == "en: English - .en" ||
-//             languageList[i].value == "en: English (Automatic Captions) - a.en") {
-//             languageList[i].click();
-//             break;
-//         }
-//     }
-//     window.setTimeout(function(){ getListOfOccurances(searchTerm); }, 500);
-// }
 
 function getListOfOccurances(text) {
     var captionLineList = document.getElementsByClassName("cue-group style-scope ytd-transcript-body-renderer");
@@ -42,10 +26,12 @@ function getListOfOccurances(text) {
         if(string.includes(text)) {
             var splittedString = time.split(":");
 
+            //convert into minutes and push into the array of occurances
             occurances.push(parseInt(splittedString[0])*60 + parseInt(splittedString[1]));
         }
     }
-    num = 0;
+
+    //store the list of occurances in chrome's local storage so that popup.js can use later for navigating
     chrome.storage.local.set({
         listOfResults: occurances,
         number: 0
@@ -54,14 +40,11 @@ function getListOfOccurances(text) {
     if(occurances.length == 0) {
         alert("word not found");
     }
-    console.log(occurances[0]);
-    //TODO: Update the buttons css when the results are ready
+
+    //to tell popup.js that we are ready
     chrome.runtime.sendMessage({greeting: "hello"});
 }
 
-function jumpTimeOverloaded(time) {
-    return "&t=" + time + "s";
-}
 
 chrome.extension.onMessage.addListener(function(message,sender,sendResponse){
   if(message.code != null){
