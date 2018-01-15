@@ -3,9 +3,16 @@ Jump to any part of a (long) YouTube video with precision to the seconds.
 An extension for the precision minded folks, or anyone who likes to be fast.
 
 Latest Changes:
-* Jump to a part of a video by searching for keywords in the subtitles(similar to Ctrl-F in documents). Great for long lecture videos if you want to skip to the part where the lecture talks about a specific topic. When the ```prev``` and ```next``` button turn limegreen, it means the search is done and you can start jumping in the videos. 
+* Jump to a part of a video by searching for keywords in the subtitles(similar to Ctrl-F in documents). Great for long lecture videos if you want to skip to the part where the lecture talks about a specific topic. When the ```prev``` and ```next``` button turn limegreen, it means the search is done and you can start jumping in the videos.
 
-Ctrl-J (Cmd-J for MAC) to open the extension. Key in the time you want, and press "Enter".  
+Future Changes:
+* Ability to select different languages for transcripts
+
+
+Shortcuts:
+- Ctrl-J (Cmd-J for MAC) to open the extension.
+- Key in the time you want to jump to, and press "Enter".  
+- Ctrl-C to copy original YouTube URL
 
 How To:
 1. Download the zip folder
