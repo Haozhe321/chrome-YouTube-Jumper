@@ -23,7 +23,7 @@ function getListOfOccurances(text) {
     for(var i = 0; i < captionLineList.length; i++) {
         var time = captionLineList[i].getElementsByClassName("cue-group-start-offset style-scope ytd-transcript-body-renderer")[0].innerHTML;
         var string = captionLineList[i].getElementsByClassName("cue style-scope ytd-transcript-body-renderer")[0].innerHTML;
-        if(string.includes(text)) {
+        if(string.toLowerCase().includes(text.toLowerCase())) {
             var splittedString = time.split(":");
 
             //convert into minutes and push into the array of occurances
