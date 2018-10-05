@@ -9,9 +9,10 @@ function clickOnMore() {
 the function on the previous line has been completed. Else this creates problems with the clicking
 of the UI */
 function clickOnTranscript() {
-    var clickTranscript = document.getElementsByClassName("style-scope ytd-menu-popup-renderer");
+    var clickTranscript = document.getElementsByID("items");
+
     window.setTimeout(function(){
-        clickTranscript.item(2).click();
+        clickTranscript.children[1].click();
         window.setTimeout(function() { getListOfOccurances(searchTerm);}, 2000);
     }, 500);
 }
